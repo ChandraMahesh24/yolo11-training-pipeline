@@ -1,5 +1,5 @@
 # ------------------------------------------------------------
-# YOLOv11 Training Pipeline (Custom Model)
+# YOLOv11 Training Pipeline for Kaggle (Ultralytics + Roboflow)
 # ------------------------------------------------------------
 # This script trains a custom YOLOv11 model using:
 # - Roboflow dataset (via API)
@@ -7,10 +7,6 @@
 # - Advanced training configurations
 # - ONNX export and result visualization
 # ------------------------------------------------------------
-
-# --- Install Required Libraries ---
-# Uncomment below if running in Jupyter or Colab
-# !pip install roboflow ultralytics opencv-python pillow pyyaml
 
 import os
 import yaml
@@ -78,21 +74,21 @@ LOSS_WEIGHTS = {
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {DEVICE}")
 if DEVICE == "cpu":
-    print("⚠️ WARNING: CUDA not detected. Training will be slower on CPU.")
+    print(" WARNING: CUDA not detected. Training will be slower on CPU.")
 
 # ------------------------------------------------------------
 # Dataset Download via Roboflow
 # ------------------------------------------------------------
-print(f"\n📦 Downloading dataset from Roboflow: {ROBOFLOW_WORKSPACE}/{ROBOFLOW_PROJECT} (v{ROBOFLOW_VERSION})")
+print(f"\n Downloading dataset from Roboflow: {ROBOFLOW_WORKSPACE}/{ROBOFLOW_PROJECT} (v{ROBOFLOW_VERSION})")
 try:
     rf = Roboflow(api_key=ROBOFLOW_API_KEY)
     project = rf.workspace(ROBOFLOW_WORKSPACE).project(ROBOFLOW_PROJECT)
     version = project.version(ROBOFLOW_VERSION)
     dataset = version.download(YOLO_FORMAT)
     DATA_YAML_PATH = os.path.join(dataset.location, "data.yaml")
-    print(f"✅ Dataset downloaded to: {dataset.location}")
+    print(f" Dataset downloaded to: {dataset.location}")
 except Exception as e:
-    print(f"❌ Error downloading dataset: {e}")
+    print(f" Error downloading dataset: {e}")
     exit()
 
 # ------------------------------------------------------------
@@ -104,31 +100,31 @@ try:
 
     num_classes = data_yaml.get('nc', 0)
     class_names = data_yaml.get('names', [])
-    print(f"✅ Number of classes: {num_classes}")
-    print(f"✅ Class names: {class_names}")
+    print(f" Number of classes: {num_classes}")
+    print(f" Class names: {class_names}")
 
     if num_classes == 0 or not class_names:
-        print("❌ No classes found in data.yaml. Please check your Roboflow dataset.")
+        print(" No classes found in data.yaml. Please check your Roboflow dataset.")
         exit()
 except Exception as e:
-    print(f"❌ Error reading data.yaml: {e}")
+    print(f" Error reading data.yaml: {e}")
     exit()
 
 # ------------------------------------------------------------
 # Load Custom YOLOv11 Model
 # ------------------------------------------------------------
-print(f"\n🔧 Loading YOLOv11 model: {MODEL_VARIANT}")
+print(f"\n Loading YOLOv11 model: {MODEL_VARIANT}")
 try:
     model = YOLO(MODEL_VARIANT)
-    print("✅ Model loaded successfully.")
+    print(" Model loaded successfully.")
 except Exception as e:
-    print(f"❌ Error loading model: {e}")
+    print(f" Error loading model: {e}")
     exit()
 
 # ------------------------------------------------------------
 # Start Model Training
 # ------------------------------------------------------------
-print("\n🚀 Starting model training...")
+print("\n Starting model training...")
 try:
     model.train(
         data=DATA_YAML_PATH,
@@ -176,53 +172,53 @@ try:
         **AUGMENTATION,
         patience=10,
     )
-    print("✅ Model training completed.")
+    print(" Model training completed.")
 except Exception as e:
-    print(f"❌ Error during training: {e}")
+    print(f" Error during training: {e}")
 
 # ------------------------------------------------------------
 # Validation Metrics
 # ------------------------------------------------------------
-print("\n📈 Starting model validation...")
+print("\n Starting model validation...")
 try:
     metrics = model.val()
-    print("\n✅ Validation Metrics:")
-    print(f"  📌 mAP50-95: {metrics.box.map:.4f}")
-    print(f"  📌 mAP50: {metrics.box.map50:.4f}")
-    print(f"  📌 mAP75: {metrics.box.map75:.4f}")
-    print(f"  📌 Per-class mAP: {metrics.box.maps}")
+    print("\n Validation Metrics:")
+    print(f"   mAP50-95: {metrics.box.map:.4f}")
+    print(f"   mAP50: {metrics.box.map50:.4f}")
+    print(f"   mAP75: {metrics.box.map75:.4f}")
+    print(f"   Per-class mAP: {metrics.box.maps}")
 except Exception as e:
-    print(f"❌ Error during validation: {e}")
+    print(f" Error during validation: {e}")
 
 # ------------------------------------------------------------
 # Visualize Training Results
 # ------------------------------------------------------------
-print("\n🖼️ Visualizing training results...")
+print("\n Visualizing training results...")
 try:
     result_img_path = os.path.join(PROJECT_DIR, EXPERIMENT_NAME, "results.png")
     if os.path.exists(result_img_path):
         img = Image.open(result_img_path)
         display(img)
     else:
-        print("⚠️ results.png not found.")
+        print(" results.png not found.")
 except Exception as e:
-    print(f"❌ Error displaying results: {e}")
+    print(f" Error displaying results: {e}")
 
 # ------------------------------------------------------------
 # Export Model to ONNX
 # ------------------------------------------------------------
-print("\n📤 Exporting model to ONNX format...")
+print("\n Exporting model to ONNX format...")
 try:
     exported_model_path = model.export(format="onnx")
-    print(f"✅ Model exported to: {exported_model_path}")
+    print(f" Model exported to: {exported_model_path}")
 except Exception as e:
-    print(f"❌ Error exporting model: {e}")
+    print(f" Error exporting model: {e}")
 
 # ------------------------------------------------------------
 # TensorBoard Launch Instructions
 # ------------------------------------------------------------
-print("\n📊 To view training progress in TensorBoard:")
+print("\n To view training progress in TensorBoard:")
 print("Run in terminal:\n    tensorboard --logdir runs/train")
 print("Then open: http://localhost:6006")
 
-print("\n✅ Script completed successfully.")
+print("\n Script completed successfully.")
