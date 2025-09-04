@@ -1,26 +1,34 @@
-# yolo11-training-pipeline
-A custom YOLOv11 training pipeline using Roboflow and Ultralytics, with advanced training, augmentation, validation, visualization, and ONNX export support.
+# YOLOv11 Training Pipeline on Kaggle 🚀
 
-# YOLOv11 Training Pipeline 🚀
-
-This repository provides a full training pipeline for a custom object detection model architecture called **YOLOv11**, based on [Ultralytics](https://github.com/ultralytics/ultralytics). It supports advanced configuration, Roboflow dataset integration, model evaluation, training visualization, and model export (ONNX).
-
-> **Note:** YOLOv11 is a custom architecture. If you're using official Ultralytics models like `yolov8n.pt`, rename accordingly. This repo assumes `yolo11n.pt` or other YOLOv11 variants are available.
+This repository provides a complete training pipeline for a **custom YOLOv11 object detection model**, fully integrated with Roboflow and running on **Kaggle Notebooks** using the **Ultralytics backend** (YOLOv8 framework).
 
 ---
 
-## 🔧 Features
+## 📍 What is YOLOv11?
 
-- 🔗 Roboflow dataset download via API
-- 🧠 Custom YOLOv11 model loading (e.g., `yolo11n.pt`)
-- ⚙️ Advanced training hyperparameters and augmentation
-- 🧪 Model evaluation (mAP, precision, recall)
-- 🖼️ Auto-generated training result visualizations
-- 🔄 ONNX model export
-- 📊 TensorBoard support
+YOLOv11 is a **custom extension** or experimental variant of the YOLOv8 architecture. It uses the [Ultralytics YOLO](https://github.com/ultralytics/ultralytics) backend but supports custom model variants such as `yolo11n.pt`.
+
+> **Note:** If you're using the official YOLOv8 models (e.g., `yolov8n.pt`), this pipeline will work just as well — just rename accordingly.
 
 ---
 
-## 📂 Repository Structure
+## ✅ Features
 
+- 📥 Roboflow dataset integration via API
+- 🧠 Custom model loading (`yolo11n.pt`, etc.)
+- ⚙️ Full control over training hyperparameters and augmentation
+- 🧪 Auto evaluation (mAP50, mAP75, etc.)
+- 🖼️ Training results visualization (plots, metrics)
+- 🔄 ONNX export support
+- 🧠 Runs on Kaggle with GPU acceleration
 
+---
+
+## 📦 Requirements
+
+No installation is needed locally.
+
+All dependencies will be installed **inside the Kaggle Notebook**:
+
+```python
+!pip install -q roboflow ultralytics opencv-python-headless pillow pyyaml
