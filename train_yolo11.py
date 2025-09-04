@@ -25,10 +25,10 @@ from IPython.display import display
 # ------------------------------------------------------------
 
 # Roboflow Dataset Info
-ROBOFLOW_API_KEY = "h9neD8fbB62pwYy8wykA"
-ROBOFLOW_WORKSPACE = "transline-technologies"
-ROBOFLOW_PROJECT = "scakmerge-a3psd"
-ROBOFLOW_VERSION = 6
+ROBOFLOW_API_KEY = ""
+ROBOFLOW_WORKSPACE = ""
+ROBOFLOW_PROJECT = ""
+ROBOFLOW_VERSION = 1
 YOLO_FORMAT = "yolov11"  # Custom format name (for clarity)
 
 # Custom YOLOv11 Model
